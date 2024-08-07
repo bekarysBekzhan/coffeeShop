@@ -24,10 +24,6 @@ const OrderHistoryCard: React.FC<orderHistoryCardProps> = ({
                     <Text style={styles.headerTitle}>Order Time</Text>
                     <Text style={styles.headerSubtitle}>{orderDate}</Text>
                 </View>
-                <View style={styles.priceContainer}>
-                    <Text style={styles.headerTitle}>Total Amount</Text>
-                    <Text style={styles.headerPrice}>$ {cartListPrice}</Text>
-                </View>
             </View>
         </View>
     )

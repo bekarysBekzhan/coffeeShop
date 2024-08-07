@@ -74,16 +74,6 @@ const CartScreen = ({ navigation, route }: any) => {
               </View>
             )}
           </View>
-
-          {cartList.length != 0 ? (
-            <PaymentFooter
-              price={{ price: cartPrice, currency: '$' }}
-              buttonPressHandler={buttonPressHandler}
-              buttonTitle='Pay'
-            />
-          ) : (
-            <></>
-          )}
         </View>
       </ScrollView>
     </View>

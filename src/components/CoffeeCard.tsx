@@ -53,7 +53,7 @@ const CoffeeCard: React.FC<CoffeeCardProps> = ({
             <Text style={styles.cardSubtitle}>{special_ingredient}</Text>
             <View style={styles.cardFooterRow}>
                 <Text style={styles.cardPriceCurrency}>
-                    $<Text style={styles.cardPrice}>{price.price}</Text>
+                    Add
                 </Text>
                 <TouchableOpacity onPress={() => {
                     buttonPressHandler({
