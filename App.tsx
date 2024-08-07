@@ -9,10 +9,11 @@ import TabNavigator from './src/navigators/TabNavigator'
 const Stack = createNativeStackNavigator();
 
 const App = () => {
+  console.log("wlkjfnwkjefnwlkjenf")
   return (
     <NavigationContainer>
       <Stack.Navigator screenOptions={{ headerShown: false }}>
-
+      
         <Stack.Screen
           name='Tab'
           component={TabNavigator}
