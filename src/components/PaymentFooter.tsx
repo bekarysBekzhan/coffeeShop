@@ -17,12 +17,6 @@ const PaymentFooter: React.FC<PaymentFooterProps> = ({ price, buttonPressHandler
     console.log('PaymentFooter price: ', price)
     return (
         <View style={styles.priceFooter}>
-            <View style={styles.priceContainer}>
-                <Text style={styles.priceTitle}>Price</Text>
-                <Text style={styles.priceText}>
-                    {price.currency} <Text style={styles.price}>{price.price}</Text>
-                </Text>
-            </View>
             <TouchableOpacity
                 style={styles.payButton}
                 onPress={() => buttonPressHandler()}

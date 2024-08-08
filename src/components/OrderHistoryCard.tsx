@@ -1,6 +1,7 @@
-import { StyleSheet, Text, View } from 'react-native'
+import { StyleSheet, Text, TouchableOpacity, View } from 'react-native'
 import React from 'react'
 import { COLORS, FONTFAMILY, FONTSIZE, SPACING } from '../theme/theme';
+import OrderItemCard from './OrderItemCard';
 
 interface orderHistoryCardProps {
     navigationHandler: any;
@@ -24,6 +25,29 @@ const OrderHistoryCard: React.FC<orderHistoryCardProps> = ({
                     <Text style={styles.headerTitle}>Order Time</Text>
                     <Text style={styles.headerSubtitle}>{orderDate}</Text>
                 </View>
+            </View>
+            <View style={styles.listContainer}>
+                {cartList.map((data: any, index: any) => (
+                    <TouchableOpacity 
+                    key={index.toString() + data.id}
+                    onPress={() => {
+                        navigationHandler({
+                            index: data.index,
+                            id: data.id,
+                            type: data.type,
+                        })
+                    }}
+                    >
+                        <OrderItemCard
+                            type={data.type}
+                            name={data.name}
+                            imagelink_square={data.imagelink_square}
+                            special_ingredient={data.special_ingredient}
+                            prices={data.prices}
+                            itemPrice={data.ItemPrice}
+                        />
+                    </TouchableOpacity>
+                ))}
             </View>
         </View>
     )

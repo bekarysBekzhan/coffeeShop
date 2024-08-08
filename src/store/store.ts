@@ -177,24 +177,35 @@ export const useStore = create(
             addToOrderHistoryListFromCart: () =>
                 set(
                     produce(state => {
+                        // Get the current date and time
+                        const currentDate = new Date();
+
+                        // Add 5 hours to the current time
+                        currentDate.setHours(currentDate.getHours() + 5);
+
+                        // Format the adjusted date and time
+                        const adjustedDate = currentDate.toDateString();
+                        const adjustedTime = currentDate.toLocaleTimeString();
+
                         let temp = state.CartList.reduce(
                             (accumulator: number, currentValue: any) =>
                                 accumulator + parseFloat(currentValue.ItemPrice),
                             0,
                         );
 
+                        // Add to order history
                         if (state.OrderHistoryList.length > 0) {
                             state.OrderHistoryList.unshift({
-                                orderDate: new Date().toDateString() + " " + new Date().toLocaleTimeString(),
+                                orderDate: adjustedDate + " " + adjustedTime,
                                 cartList: state.CartList,
                                 cartListPrice: temp.toFixed(2).toString(),
-                            })
+                            });
                         } else {
                             state.OrderHistoryList.push({
-                                orderDate: new Date().toDateString() + " " + new Date().toLocaleTimeString(),
+                                orderDate: adjustedDate + " " + adjustedTime,
                                 cartList: state.CartList,
                                 cartListPrice: temp.toFixed(2).toString(),
-                            })
+                            });
                         }
                         state.CartList = [];
                     })

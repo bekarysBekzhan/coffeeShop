@@ -1,5 +1,5 @@
 import { ScrollView, StatusBar, StyleSheet, Text, TouchableOpacity, View } from 'react-native'
-import React from 'react'
+import React, { useState } from 'react'
 import { useStore } from '../store/store'
 import { useBottomTabBarHeight } from '@react-navigation/bottom-tabs'
 import { COLORS, SPACING } from '../theme/theme'
@@ -7,6 +7,7 @@ import HeaderBar from '../components/HeaderBar'
 import EmptyListAnimation from '../components/EmptyListAnimation'
 import PaymentFooter from '../components/PaymentFooter'
 import CartItem from '../components/CartItem'
+import PopUpAnimation from '../components/PopUpAnimation'
 
 const CartScreen = ({ navigation, route }: any) => {
   const cartList = useStore((state: any) => state.CartList);
@@ -14,17 +15,25 @@ const CartScreen = ({ navigation, route }: any) => {
   const incrementCartItemQuantity = useStore((state: any) => state.incrementCartItemQuantity);
   const decrementCartItemQuantity = useStore((state: any) => state.decrementCartItemQuantity);
   const calculateCartPrice = useStore((state: any) => state.calculateCartPrice);
+  const addToOrderHistoryListFromCart = useStore((state: any) => state.addToOrderHistoryListFromCart)
+  const [showAnimation, setShowAnimation] = useState(false);
   const tabBarHeight = useBottomTabBarHeight();
 
   const buttonPressHandler = () => {
-    navigation.push('Payment', {amount: cartPrice});
+    setShowAnimation(true);
+    addToOrderHistoryListFromCart();
+    calculateCartPrice();
+    setTimeout(() => {
+      setShowAnimation(false);
+      navigation.navigate('History');
+    }, 2000)
   }
 
   const incrementCartItemQuantityHandler = (id: string, size: string) => {
     incrementCartItemQuantity(id, size);
     calculateCartPrice();
   }
-  
+
   const decrementCartItemQuantityHandler = (id: string, size: string) => {
     decrementCartItemQuantity(id, size);
     calculateCartPrice();
@@ -35,6 +44,15 @@ const CartScreen = ({ navigation, route }: any) => {
   return (
     <View style={styles.screenContainer}>
       <StatusBar backgroundColor={COLORS.primaryBlackHex} />
+
+      {showAnimation ? (
+        <PopUpAnimation
+          style={styles.lottieAnimation}
+          source={require('../lottie/download.json')}
+        />
+      ) : (
+        <></>
+      )}
 
       <ScrollView
         showsVerticalScrollIndicator={false}
@@ -49,13 +67,13 @@ const CartScreen = ({ navigation, route }: any) => {
               <View>
                 {cartList.map((data: any) => (
                   <TouchableOpacity
-                    onPress={() => { 
+                    onPress={() => {
                       navigation.push('Details', {
                         index: data.index,
                         id: data.id,
                         type: data.type,
                       })
-                     }}
+                    }}
                     key={data.id}
                   >
                     <CartItem
@@ -74,6 +92,17 @@ const CartScreen = ({ navigation, route }: any) => {
               </View>
             )}
           </View>
+
+          {cartList.length != 0 ? (
+            <PaymentFooter
+              price={{ price: cartPrice, currency: '$' }}
+              buttonPressHandler={buttonPressHandler}
+              buttonTitle='Add to Orders'
+            />
+          ) : (
+            <></>
+          )}
+
         </View>
       </ScrollView>
     </View>
@@ -86,6 +115,9 @@ const styles = StyleSheet.create({
   screenContainer: {
     flex: 1,
     backgroundColor: COLORS.primaryBlackHex,
+  },
+  lottieAnimation: {
+    flex: 1,
   },
   scrollViewFlex: {
     flexGrow: 1,
